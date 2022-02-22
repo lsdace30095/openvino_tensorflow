@@ -320,7 +320,7 @@ def build_tensorflow(tf_version,
     os.environ["TF_NEED_TENSORRT"] = "0"
     os.environ["TF_DOWNLOAD_CLANG"] = "0"
     os.environ["TF_SET_ANDROID_WORKSPACE"] = "0"
-    os.environ["CC_OPT_FLAGS"] = "-march=" + target_arch + " -Wno-sign-compare"
+    os.environ["CC_OPT_FLAGS"] = "-Wno-sign-compare"
     if (target_arch == "silvermont"):
         os.environ[
             "CC_OPT_FLAGS"] = " -mcx16 -mssse3 -msse4.1 -msse4.2 -mpopcnt -mno-avx"
@@ -857,13 +857,7 @@ def build_openvino(build_dir, openvino_src_dir, cxx_abi, target_arch,
             "-DCMAKE_INSTALL_PREFIX=" + install_location
         ])
 
-    if platform.system() == 'Linux':
-        openvino_cmake_flags.extend([
-            "-DCMAKE_CXX_FLAGS=-D_GLIBCXX_USE_CXX11_ABI=" + cxx_abi + " -march="
-            + target_arch + atom_flags
-        ])
-    else:
-        openvino_cmake_flags.extend(
+    openvino_cmake_flags.extend(
             ["-DCMAKE_CXX_FLAGS=-D_GLIBCXX_USE_CXX11_ABI=" + cxx_abi])
 
     if debug_enabled:
